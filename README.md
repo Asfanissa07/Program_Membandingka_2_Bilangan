@@ -32,25 +32,82 @@ Xkecil:
 Sama:	 
 	MOV AH, 09h
 	LEA DX, Kal2
-    MOV BH, 00h
-    MOV BL, 10100101b
-    MOV CX, 42
-    INT 10h  
-	JMP Cetak 
-	
-Xbesar:       
-	MOV AH, 09h  
-	LEA DX, Kal1
-    MOV BH, 00h
-    MOV BL, 11001111b
-    MOV CX, 38
-    INT 10h  
-	JMP Cetak 
-	
-	
-Cetak:
-    INT 21h 
 
+.MODEL SMALL
+.CODE
+ORG 100h
+ 
+DATA:
+    JMP Output	
+	Judul DB 10,13,10,13,'=== Program Membandingkan 2 Bilangan Bulat === $'  
+	Garis DB 10,13,'============================================== $'
+	bil1  DB 10,13,'Masukkan angka pertama  : $'
+	bil2  DB 10,13,'Masukkan angka kedua    : $' 
+	Kal1 DB 10,13,'Bilangan ke-1 lebih kecil dr bilangan ke-2 $'
+	Kal2 DB 10,13,'Bilangan ke-1 lebih besar dr bilangan ke-2 $'
+	Kal3 DB 10,13,'Bilangan ke-1 besarnya sama dgn bilangan ke-2 $'
+	Ty   DB 10,13,10,13,'Terimakasih telah menggunakan aplikasi ini ^_^ $'
 	
-Exit: INT 20h
+	
+
+
+  
+Output:
+    
+    MOV DX, OFFSET Judul
+    MOV AH, 09h
+    INT 21h
+    
+    MOV DX, OFFSET Garis
+    MOV AH, 09h
+    INT 21h
+    JMP Input
+
+Input:     
+    MOV DX, OFFSET bil1
+    MOV AH, 09h
+    INT 21h
+    
+    MOV AH, 1
+    INT 21h
+    
+    MOV CL, AL
+   
+    MOV DX, OFFSET bil2
+    MOV AH, 09h
+    INT 21h
+    
+    MOV AH, 1
+    INT 21h
+    MOV DL, AL
+    
+    CMP CL, DL
+    JE Sama
+    JL Kecil
+    
+    MOV DX, OFFSET Kal2   ;Bilangan ke-1 lebih besar dr bilangan ke-2
+    MOV AH, 09h
+    INT 21h   
+	JMP Exit   
+        
+    
+    
+Kecil: 
+    MOV DX, OFFSET Kal1   ;Bilangan ke-1 lebih kecil dr bilangan ke-2
+    MOV AH, 09h
+    INT 21h
+    JMP Exit  
+	  
+	
+Sama:       
+    MOV DX, OFFSET Kal3   ;Bilangan ke-1 besarnya sama dgn bilangan ke-2
+    MOV AH, 09h
+    INT 21h 
+	JMP Exit
+	            
+	
+Exit:
+    LEA DX, Ty
+    MOV AH, 09h 
+    INT 21h
 END DATA
