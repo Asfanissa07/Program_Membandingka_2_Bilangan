@@ -1,37 +1,6 @@
 # Program_Membandingka_2_Bilangan
 
-.MODEL SMALL
-.CODE
-ORG 100h
 
-Data:	
-    JMP Proses
-	BilX DB 8
-	BilY DB 10  
-	Kal0 DB 'Bilangan X lebih kecil dari bilangan Y $'
-	Kal1 DB 'Bilangan X lebih besar dari bilangan Y $'
-	Kal2 DB 'Bilangan X besarnya sama dengan bilangan Y $' 
-	
-Proses:
-	MOV AL, BilX
-	CMP AL, BilY 
-	JB XKecil
-	JE Sama
-	JA Xbesar
-    
-	
-Xkecil: 
-    MOV AH, 09h
-    LEA DX, Kal0
-    MOV BH, 00h
-    MOV BL, 11110011b
-    MOV CX, 38
-    INT 10h   
-	JMP Cetak  
-	
-Sama:	 
-	MOV AH, 09h
-	LEA DX, Kal2
 
 .MODEL SMALL
 .CODE
@@ -41,17 +10,13 @@ DATA:
     JMP Output	
 	Judul DB 10,13,10,13,'=== Program Membandingkan 2 Bilangan Bulat === $'  
 	Garis DB 10,13,'============================================== $'
-	bil1  DB 10,13,'Masukkan angka pertama  : $'
-	bil2  DB 10,13,'Masukkan angka kedua    : $' 
-	Kal1 DB 10,13,'Bilangan ke-1 lebih kecil dr bilangan ke-2 $'
-	Kal2 DB 10,13,'Bilangan ke-1 lebih besar dr bilangan ke-2 $'
-	Kal3 DB 10,13,'Bilangan ke-1 besarnya sama dgn bilangan ke-2 $'
-	Ty   DB 10,13,10,13,'Terimakasih telah menggunakan aplikasi ini ^_^ $'
-	
-	
+	bil1  DB 10,13,'Masukkan bilangan pertama  : $'
+	bil2  DB 10,13,'Masukkan bilangan kedua    : $' 
+	Kal1  DB 10,13,'Bilangan ke-1 lebih kecil dari bilangan ke-2 $'
+	Kal2  DB 10,13,'Bilangan ke-1 lebih besar dari bilangan ke-2 $'
+	Kal3  DB 10,13,'Bilangan ke-1 besarnya sama dgn bilangan ke-2 $'
+	Ty    DB 10,13,10,13,'Terimakasih telah menggunakan aplikasi ini ^_^ $'
 
-
-  
 Output:
     
     MOV DX, OFFSET Judul
@@ -83,29 +48,25 @@ Input:
     
     CMP CL, DL
     JE Sama
-    JL Kecil
+    JB Kecil
     
     MOV DX, OFFSET Kal2   ;Bilangan ke-1 lebih besar dr bilangan ke-2
     MOV AH, 09h
     INT 21h   
 	JMP Exit   
-        
-    
     
 Kecil: 
     MOV DX, OFFSET Kal1   ;Bilangan ke-1 lebih kecil dr bilangan ke-2
     MOV AH, 09h
     INT 21h
-    JMP Exit  
-	  
+    JMP Exit  	  
 	
 Sama:       
     MOV DX, OFFSET Kal3   ;Bilangan ke-1 besarnya sama dgn bilangan ke-2
     MOV AH, 09h
     INT 21h 
 	JMP Exit
-	            
-	
+	            	
 Exit:
     LEA DX, Ty
     MOV AH, 09h 
